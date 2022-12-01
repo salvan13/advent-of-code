@@ -1,6 +1,6 @@
 import { readInput } from "../utils.js";
 
-const { values } = await readInput("01", "input.txt", l => parseInt(l));
+const { values } = await readInput({ sourceUrl: import.meta.url, parser: l => parseInt(l) });
 
 // part 1
 

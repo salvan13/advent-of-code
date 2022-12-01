@@ -2,10 +2,9 @@ import { open } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const baseDir = dirname(fileURLToPath(import.meta.url));
-
-export const readInput = async (day, fileName, parser = l => l) => {
-  const file = await open(join(baseDir, String(day), fileName));
+export const readInput = async ({ sourceUrl, fileName = "input.txt", parser = l => l }) => {
+  const baseDir = dirname(fileURLToPath(sourceUrl));
+  const file = await open(join(baseDir, fileName));
 
   const lines = [];
   const values = [];
