@@ -1,11 +1,11 @@
 import { readInput } from "../utils.js";
 
-const { values } = await readInput(1, "input.txt", l => parseInt(l));
+const { values } = await readInput("01", "input.txt", l => parseInt(l));
 
 // part 1
 
 const elfs = values.reduce((elfs, calorie) => {
-  if(calorie) {
+  if (calorie) {
     elfs[elfs.length - 1] += calorie;
   } else {
     elfs.push(0);
