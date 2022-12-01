@@ -2,4 +2,4 @@
 
 requires node.js 18
 
-`node 1/puzzle.js`
+`node 01/puzzle.js`
