@@ -19,3 +19,5 @@ export const readInput = async ({ sourceUrl, fileName = "input.txt", parser = l 
     values
   };
 };
+
+export const sum = array => array.reduce((a, c) => a + c, 0);

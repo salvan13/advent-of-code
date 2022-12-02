@@ -1,4 +1,4 @@
-import { readInput } from "../utils.js";
+import { readInput, sum } from "../utils.js";
 
 const { values } = await readInput({ sourceUrl: import.meta.url, parser: l => parseInt(l) });
 
@@ -19,4 +19,4 @@ console.log(Math.max(...elfs));
 
 const sortedElfs = elfs.sort((a, b) => b - a);
 const bestElfs = sortedElfs.slice(0, 3);
-console.log(bestElfs.reduce((a, c) => a + c, 0));
+console.log(sum(bestElfs));
