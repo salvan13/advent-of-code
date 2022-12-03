@@ -9,8 +9,8 @@ const { values, lines } = await readInput({ sourceUrl: import.meta.url, parser }
 
 // part 1
 
-const findDuplicate = array => {
-  const letters = array.reduce((accumulator, word) => {
+const findChar = array => {
+  const characters = array.reduce((accumulator, word) => {
     new Set(word.split("")).forEach(char => {
       if (!accumulator[char]) {
         accumulator[char] = 1;
@@ -20,7 +20,7 @@ const findDuplicate = array => {
     })
     return accumulator;
   }, {});
-  return Object.entries(letters).find(e => e[1] === array.length)[0];
+  return Object.entries(characters).find(e => e[1] === array.length)[0];
 };
 
 const calcValue = (item) => {
@@ -28,7 +28,7 @@ const calcValue = (item) => {
   return charCode - (charCode < 91 ? 38 : 96);
 };
 
-console.log(sum(values.map(findDuplicate).map(calcValue)));
+console.log(sum(values.map(findChar).map(calcValue)));
 
 // part 2
 
@@ -38,4 +38,4 @@ const groups = new Array(lines.length / ELF_PER_GROUP)
   .fill(null)
   .map((_, i) => lines.slice(i * ELF_PER_GROUP, i * ELF_PER_GROUP + ELF_PER_GROUP));
 
-console.log(sum(groups.map(findDuplicate).map(calcValue)));
+console.log(sum(groups.map(findChar).map(calcValue)));
