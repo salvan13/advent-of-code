@@ -10,13 +10,11 @@ const parser = line => {
 
   const sets = [new Set(sections[0]), new Set(sections[1])];
 
-  const included = [isSuperset(sets[1], sets[0]), isSuperset(sets[0], sets[1])];
+  const included = isSuperset(sets[0], sets[1]) || isSuperset(sets[1], sets[0]);
 
   const overlaps = intersection(sets[0], sets[1]).size > 0;
 
   return {
-    input,
-    sections,
     included,
     overlaps
   }
@@ -26,7 +24,7 @@ const { values } = await readInput({ sourceUrl: import.meta.url, parser });
 
 // part 1
 
-console.log(values.filter(v => v.included.some(a => a)).length);
+console.log(values.filter(v => v.included).length);
 
 // part 2
 
