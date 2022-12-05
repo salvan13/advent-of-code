@@ -25,19 +25,13 @@ const initialCargo = () => [
 
 // part 1
 
-const solve = (sortCratesFn) => {
+const solve = ({ reverse = true } = {}) => {
   const cargo = initialCargo();
 
   moves.forEach(move => {
-    let crates = [];
-    let stpes = move.quantity;
-
-    while (stpes--) {
-      crates.push(cargo[move.from - 1].pop());
-    }
-
-    sortCratesFn && (crates = sortCratesFn(crates));
-
+    let crates = cargo[move.from - 1]
+      .splice(cargo[move.from - 1].length - move.quantity, move.quantity);
+    reverse && (crates = crates.reverse());
     cargo[move.to - 1] = cargo[move.to - 1].concat(crates);
   });
 
@@ -49,4 +43,4 @@ console.log(solve());
 
 // part 2
 
-console.log(solve((crates) => crates.reverse()));
+console.log(solve({ reverse: false }));
