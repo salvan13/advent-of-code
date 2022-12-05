@@ -38,7 +38,7 @@ const solve = (sortCratesFn) => {
 
     sortCratesFn && (crates = sortCratesFn(crates));
 
-    crates.forEach(c => cargo[move.to - 1].push(c));
+    cargo[move.to - 1] = cargo[move.to - 1].concat(crates);
   });
 
   return cargo.map(c => c[c.length - 1]).join('');
