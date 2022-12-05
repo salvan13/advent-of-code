@@ -28,11 +28,11 @@ const initialCargo = () => [
 const solve = ({ reverse = true } = {}) => {
   const cargo = initialCargo();
 
-  moves.forEach(move => {
-    let crates = cargo[move.from]
-      .splice(cargo[move.from].length - move.quantity, move.quantity);
+  moves.forEach(({ quantity, from, to }) => {
+    let crates = cargo[from]
+      .splice(cargo[from].length - quantity, quantity);
     reverse && (crates = crates.reverse());
-    cargo[move.to] = cargo[move.to].concat(crates);
+    cargo[to] = cargo[to].concat(crates);
   });
 
   return cargo.map(c => c[c.length - 1]).join('');
