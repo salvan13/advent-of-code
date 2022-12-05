@@ -29,8 +29,7 @@ const solve = ({ reverse = true } = {}) => {
   const cargo = initialCargo();
 
   moves.forEach(({ quantity, from, to }) => {
-    let crates = cargo[from]
-      .splice(cargo[from].length - quantity, quantity);
+    let crates = cargo[from].splice(cargo[from].length - quantity, quantity);
     reverse && (crates = crates.reverse());
     cargo[to] = cargo[to].concat(crates);
   });
