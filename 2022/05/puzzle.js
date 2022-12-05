@@ -12,33 +12,31 @@ const parser = l => {
 const { values: moves } = await readInput({ sourceUrl: import.meta.url, parser });
 
 const initialCargo = () => [
-  "WDGBHRV".split(""),
-  "JNGCRF".split(""),
-  "LSFHDNJ".split(""),
-  "JDSV".split(""),
-  "SHDRQWNV".split(""),
-  "PGHCM".split(""),
-  "FJBGLZHC".split(""),
-  "SJR".split(""),
-  "LGSRBNVM".split("")
-];
+  "WDGBHRV",
+  "JNGCRF",
+  "LSFHDNJ",
+  "JDSV",
+  "SHDRQWNV",
+  "PGHCM",
+  "FJBGLZHC",
+  "SJR",
+  "LGSRBNVM"
+].map(s => s.split(""));
 
 // part 1
 
-const solve = (fn) => {
+const solve = (sortCratesFn) => {
   const cargo = initialCargo();
 
   moves.forEach(move => {
-    let stpes = move.quantity;
     let crates = [];
+    let stpes = move.quantity;
 
     while (stpes--) {
       crates.push(cargo[move.from - 1].pop());
     }
 
-    if (fn) {
-      crates = fn(crates);
-    }
+    sortCratesFn && (crates = sortCratesFn(crates));
 
     crates.forEach(c => cargo[move.to - 1].push(c));
   });
