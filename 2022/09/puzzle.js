@@ -43,4 +43,4 @@ for (let i = 0; i < moves.length; i++) {
   }
 }
 
-console.log(rope[rope.length - 1].uniquePositions());
+console.log(rope.at(-1).uniquePositions());

@@ -17,7 +17,7 @@ export class Knot {
 
   move(dir) {
 
-    const pos = this.positions[this.positions.length - 1];
+    const pos = this.positions.at(-1);
 
     switch (dir) {
       case "U":
@@ -36,8 +36,8 @@ export class Knot {
   }
 
   follow(other) {
-    const myPos = this.positions[this.positions.length - 1];
-    const otherPos = other.positions[other.positions.length - 1];
+    const myPos = this.positions.at(-1);
+    const otherPos = other.positions.at(-1);
 
     const diffX = otherPos.x - myPos.x;
     const diffY = otherPos.y - myPos.y;
