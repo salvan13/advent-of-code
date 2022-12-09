@@ -16,7 +16,6 @@ export class Knot {
   positions = [new Point(0, 0)];
 
   move(dir) {
-
     const pos = this.positions.at(-1);
 
     switch (dir) {
