@@ -18,20 +18,25 @@ export class Knot {
   move(dir) {
     const pos = this.positions.at(-1);
 
+    let newX = pos.x;
+    let newY = pos.y;
+
     switch (dir) {
       case "U":
-        this.positions.push(new Point(pos.x, pos.y - 1));
+        newY--;
         break;
       case "D":
-        this.positions.push(new Point(pos.x, pos.y + 1));
+        newY++;
         break;
       case "L":
-        this.positions.push(new Point(pos.x - 1, pos.y));
+        newX--;
         break;
       case "R":
-        this.positions.push(new Point(pos.x + 1, pos.y));
+        newX++;
         break;
     }
+
+    this.positions.push(new Point(newX, newY));
   }
 
   follow(other) {
