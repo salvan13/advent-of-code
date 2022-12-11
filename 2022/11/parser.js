@@ -14,7 +14,7 @@ export const parser = line => {
 
   r = line.match(/Operation: (.*)/);
   if (r) {
-    return { op: r[1].replace("new", "newVal") }
+    return { op: new Function("old", `${r[1].replace("new", "newVal")}; return newVal;`) }
   }
 
   r = line.match(/Test: divisible by (\d+)/);

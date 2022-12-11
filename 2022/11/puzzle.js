@@ -15,16 +15,7 @@ const round = (monkeys, cfg) => {
     while (monkey.items.length) {
       monkey.inspects++;
 
-      const item = monkey.items.shift();
-
-      const ctx = {
-        old: item,
-        newVal: null
-      };
-
-      vm.runInNewContext(monkey.op, ctx);
-
-      let newVal = ctx.newVal;
+      let newVal = monkey.op(monkey.items.shift());
 
       if (cfg.divide) {
         newVal = Math.floor(newVal / cfg.divide);
