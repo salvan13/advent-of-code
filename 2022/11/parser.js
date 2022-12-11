@@ -14,12 +14,12 @@ export const parser = line => {
 
   r = line.match(/Operation: (.*)/);
   if (r) {
-    return { op: r[1].replace("new", "newVal").replace(/(\d+)/, "BigInt($&)") }
+    return { op: r[1].replace("new", "newVal") }
   }
 
   r = line.match(/Test: divisible by (\d+)/);
   if (r) {
-    return { test: BigInt(parseInt(r[1], 10)) }
+    return { test: parseInt(r[1], 10) }
   }
 
   r = line.match(/If true: throw to monkey (\d+)/);
