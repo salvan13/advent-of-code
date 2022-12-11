@@ -40,8 +40,7 @@ const round = (monkeys, cfg) => {
 
 const run = (times, cfg = {}) => {
   const monkeys = createMonkeyList(values);
-  Array.from({ length: times }).forEach((_, i) => {
-    i % 500 === 0 ? console.log("step", i) : null;
+  Array.from({ length: times }).forEach(() => {
     round(monkeys, cfg);
   });
   monkeys.sort((m1, m2) => m2.inspects - m1.inspects);
