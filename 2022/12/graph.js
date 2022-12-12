@@ -9,8 +9,8 @@ export const makeGraph = values => {
   };
 
   const getCost = (node) => {
-    if (node.v === "S") return "a".charCodeAt(0) - 1;
-    if (node.v === "E") return "z".charCodeAt(0) + 1;
+    if (node.v === "S") return "a".charCodeAt(0);
+    if (node.v === "E") return "z".charCodeAt(0);
     return node.v.charCodeAt(0);
   };
 
