@@ -1,4 +1,4 @@
-import { WeightedGraph } from "./djiakstra.js";
+import { WeightedGraph } from "./dijkstra.js";
 
 export const makeGraph = values => {
   const graph = new WeightedGraph();
