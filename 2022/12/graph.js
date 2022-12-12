@@ -18,7 +18,7 @@ export const makeGraph = values => {
     graph.addVertex(node.name);
   };
 
-  const getNextNodes = ({ x, y }) =>
+  const getAdjacentNodes = ({ x, y }) =>
     [{ x: x + 1, y }, { x: x - 1, y }, { x, y: y + 1 }, { x, y: y - 1 }].map(n => {
       if (values[n.y] && values[n.y][n.x]) {
         const name = getNodeName({ v: values[n.y][n.x], y: n.y, x: n.x });
@@ -33,7 +33,7 @@ export const makeGraph = values => {
       const name = getNodeName({ v: val, y, x });
       const node = { name, y, x, v: val };
       addNode(node);
-      const nodes = getNextNodes({ y, x });
+      const nodes = getAdjacentNodes({ y, x });
       nodes.forEach(next => {
         addNode(next);
         const costNode = getCost(node);
