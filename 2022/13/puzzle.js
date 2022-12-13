@@ -22,9 +22,6 @@ const compare = ([left, right]) => {
   }
 
   if (Number.isInteger(left) && Number.isInteger(right)) {
-    if (left === right) {
-      return 0;
-    }
     return right - left;
   }
 
