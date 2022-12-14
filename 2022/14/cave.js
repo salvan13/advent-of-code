@@ -37,26 +37,27 @@ export const makeCave = (values) => {
   return { cave, firstCol, lastCol, lastRow };
 };
 
-export const fall = ({ cave, firstCol, lastCol, lastRow }) => {
-  const sand = [START_COL, 0];
+export const fall = ({ cave, firstCol, lastCol, lastRow }, { onStep } = {}) => {
+  let sand = [START_COL, 0];
 
   const isFree = (col, row) => !cave[col][row];
+
+  const positions = [
+    p => [p[0], p[1] + 1],
+    p => [p[0] - 1, p[1] + 1],
+    p => [p[0] + 1, p[1] + 1]
+  ];
 
   const step = () => {
     if (sand[0] > lastCol || sand[0] < firstCol || sand[1] > lastRow || cave[sand[0]][sand[1]] === "o") {
       return false;
     }
 
-    if (isFree(sand[0], sand[1] + 1)) {
-      sand[1]++;
-      return;
-    } else if (isFree(sand[0] - 1, sand[1] + 1)) {
-      sand[0]--;
-      sand[1]++;
-      return;
-    } else if (isFree(sand[0] + 1, sand[1] + 1)) {
-      sand[0]++;
-      sand[1]++;
+    const updateFn = positions.find(f => isFree(...f(sand)));
+
+    if (updateFn) {
+      sand = updateFn(sand);
+      onStep && onStep(sand);
       return;
     }
 
@@ -83,6 +84,5 @@ export const printCave = ({ cave, firstCol, lastCol, lastRow }) => {
     }
   }
 
-  console.log({ firstCol, lastCol, lastRow });
   console.log(grid.map(row => row.join("")).join("\n"));
 };

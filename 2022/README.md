@@ -3,3 +3,9 @@
 requires node.js 18
 
 `node 01/puzzle.js`
+
+---
+
+## Animations
+
+[Day 14](./14/animation/)
