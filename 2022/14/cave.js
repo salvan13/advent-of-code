@@ -18,7 +18,6 @@ export const makeCave = (values) => {
     return a;
   }, []);
 
-
   const addPath = path => {
     fullPath(path).forEach(([col, row]) => {
       if (!cave[col]) {
@@ -41,7 +40,7 @@ export const makeCave = (values) => {
 export const fall = ({ cave, firstCol, lastCol, lastRow }) => {
   const sand = [START_COL, 0];
 
-  const isFree = (col, row) => !cave[col] || !cave[col][row];
+  const isFree = (col, row) => !cave[col][row];
 
   const step = () => {
     if (sand[0] > lastCol || sand[0] < firstCol || sand[1] > lastRow || cave[sand[0]][sand[1]] === "o") {
