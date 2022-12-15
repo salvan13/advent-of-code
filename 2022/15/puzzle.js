@@ -10,7 +10,7 @@ const { values: sensors } = await readInput({ sourceUrl: import.meta.url, parser
 
 // part 1
 
-const unavailabePositions = (y, min = -Infinity, max = Infinity) => sensors
+const unavailablePositions = (y, min = -Infinity, max = Infinity) => sensors
   .map(s => s.row(y))
   .filter(d => !!d)
   .sort((a, b) => a.start - b.start)
@@ -31,7 +31,7 @@ const unavailabePositions = (y, min = -Infinity, max = Infinity) => sensors
     return a;
   }, []);
 
-console.log(sum(unavailabePositions(2_000_000).map(r => r.end - r.start)));
+console.log(sum(unavailablePositions(2_000_000).map(r => r.end - r.start)));
 
 // part 2
 
@@ -39,7 +39,7 @@ const search = (max) => {
   let y = max;
 
   while (y--) {
-    const uY = unavailabePositions(y, 0, max);
+    const uY = unavailablePositions(y, 0, max);
     if (uY.length > 1 && (uY[1].start - uY[0].end) > 1) {
       return {
         y,
