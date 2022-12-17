@@ -1,4 +1,4 @@
-import { readInput } from "../utils.js";
+import { readInput, sum } from "../utils.js";
 import { getRock } from "./rocks.js";
 
 const { lines: { 0: jets } } = await readInput({ sourceUrl: import.meta.url });
@@ -18,7 +18,7 @@ const printGrid = grid => {
   console.log(rows.join("\n"));
 };
 
-const run = ({ steps }) => {
+const run = ({ steps, print, pattern }) => {
 
   const grid = Array.from({ length: 7 }, () => []);
 
@@ -92,12 +92,61 @@ const run = ({ steps }) => {
     }
   }
 
+  let patternH = 0;
+  let increments = "";
+
   for (let s = 0; s < steps; s++) {
+    if (pattern && increments.endsWith(pattern)) {
+      // skip the steps if the repeating pattern happens
+      let remainingSteps = steps - s;
+      const patternTimes = Math.floor(remainingSteps / pattern.length);
+      patternH = patternTimes * sum(pattern.split("").map(i => parseInt(i, 10)));
+      remainingSteps -= patternTimes * pattern.length;
+      s = steps - remainingSteps;
+    }
+
+    const prevH = gridH();
     step(s);
+    const incr = gridH() - prevH;
+    increments += incr;
   }
 
-  printGrid(grid);
-  console.log("grid H", gridH());
+  print && printGrid(grid);
+  console.log("grid H", gridH() + patternH);
+
+  return increments;
 };
 
-run({ steps: 2022 });
+run({ steps: 2022, print: true });
+
+// part 2
+
+{
+  // run just to find the increments, 5000 is a good number with the actual input
+  const increments = run({ steps: 5000 });
+
+  const findPattern = str => {
+    let patt = "";
+    let start = 0;
+    let size = 1740; // high start number to speed-up, lower it if the pattern is not found
+
+    while (size < str.length / 2) {
+      start = 0;
+      while (start < str.length / 2) {
+        patt = str.slice(start, start + size);
+        const m = str.match(new RegExp(`${patt}${patt}`))
+        if (m) {
+          return patt;
+        }
+        start++;
+      }
+      size++;
+    }
+  };
+
+  const pattern = findPattern(increments);
+
+  if (pattern) {
+    run({ steps: 1_000_000_000_000, pattern });
+  }
+}
