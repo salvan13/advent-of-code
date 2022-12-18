@@ -146,7 +146,7 @@ const find = ({ start, minutes, people }) => {
         for (let t = 0; t < valves[curr].tunnels.length; t++) {
           const next = valves[curr].tunnels[t];
 
-          if (state.visits[next] >= 2) {
+          if (state.visits[next] >= 1) {
             continue;
           }
 
