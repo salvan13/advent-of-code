@@ -50,7 +50,7 @@ export class RotatingList {
     nextNode.prev = prevNode.id;
     this.size--;
 
-    // insert the not in the new position
+    // insert the node in the new position
     const newPrev = this.getNode(prevNode.id, shift);
     const newNext = this.getNode(newPrev.next);
     newPrev.next = node.id;
