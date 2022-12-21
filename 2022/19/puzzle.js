@@ -34,7 +34,7 @@ const copy = state => ({
   history: [...state.history]
 });
 
-const run = ({ minutes: maxMinutes, bp }) => {
+const run = ({ minutes: maxMinutes, bp, maxStates }) => {
   const state = {
     materials: {
       ore: 0,
@@ -152,7 +152,7 @@ const run = ({ minutes: maxMinutes, bp }) => {
       }
     }
 
-    states = states.filter(s => s.minute > minMinute).sort(compareStates).slice(0, 50);
+    states = states.filter(s => s.minute > minMinute).sort(compareStates).slice(0, maxStates);
   }
 
   return results.sort(compareStates).sort((a, b) => b.materials.geode - a.materials.geode).at(0);
@@ -160,9 +160,18 @@ const run = ({ minutes: maxMinutes, bp }) => {
 
 const results = blueprints.map(bp => {
   console.log("started", bp.id);
-  const result = run({ minutes: 24, bp });
+  const result = run({ minutes: 24, bp, maxStates: 50 });
   console.log("END", bp.id, result);
   return { result, bp };
 });
 
 console.log(sum(results.map(r => r.result.materials.geode * r.bp.id)));
+
+// part 2
+
+console.log(blueprints.slice(0, 3).map(bp => {
+  console.log("started", bp.id);
+  const result = run({ minutes: 32, bp, maxStates: 60_000 });
+  console.log("END", bp.id, result);
+  return { result, bp };
+}).reduce((a, c) => a * c.result.materials.geode, 1));
