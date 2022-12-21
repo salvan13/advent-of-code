@@ -42,21 +42,22 @@ export class RotatingList {
       return;
     }
 
+    // remove the node from the list
     const node = this.getNode(id);
     const prevNode = this.getNode(node.prev);
     const nextNode = this.getNode(node.next);
-
     prevNode.next = nextNode.id;
     nextNode.prev = prevNode.id;
+    this.size--;
 
-    const newPrev = this.getNode(prevNode.id, shift % (this.size - 1));
+    // insert the not in the new position
+    const newPrev = this.getNode(prevNode.id, shift);
     const newNext = this.getNode(newPrev.next);
-
     newPrev.next = node.id;
     newNext.prev = node.id;
-
     node.next = newNext.id;
     node.prev = newPrev.id;
+    this.size++;
   }
 
   toString() {
