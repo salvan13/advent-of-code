@@ -17,6 +17,6 @@ console.log(Math.max(...elves));
 
 // part 2
 
-const sortedelves = elves.sort((a, b) => b - a);
-const bestelves = sortedelves.slice(0, 3);
-console.log(sum(bestelves));
+const sortedElves = elves.sort((a, b) => b - a);
+const bestElves = sortedElves.slice(0, 3);
+console.log(sum(bestElves));
