@@ -6,6 +6,7 @@ export class Elf {
     this.pos = pos;
     this.proposal = null;
     this.priorities = ["N", "S", "W", "E"];
+    this.moved = false;
   }
 
   adjacentPositions(side) {
@@ -26,10 +27,12 @@ export class Elf {
   move() {
     if (this.proposal) {
       this.pos = this.proposal;
+      this.moved = true;
     }
   }
 
   finalize() {
+    this.moved = false;
     this.proposal = null;
     this.priorities = [...this.priorities.slice(1), this.priorities.at(0)];
   }
@@ -38,6 +41,7 @@ export class Elf {
 export class Map {
   constructor(data) {
     this.elves = [];
+    this.cache = {};
 
     for (const [y, row] of data.entries()) {
       for (const [x, cell] of row.entries()) {
@@ -58,15 +62,29 @@ export class Map {
   }
 
   at({ y, x }, { checkProposal = false } = {}) {
-    return this.elves.filter(elf =>
+    const cacheKey = `${y}:${x}:${checkProposal}`;
+
+    if (this.cache[cacheKey]) {
+      return this.cache[cacheKey];
+    }
+
+    const res = this.elves.filter(elf =>
       (elf.pos.x === x && elf.pos.y === y) ||
       (checkProposal && elf.proposal && elf.proposal.x === x && elf.proposal.y === y)
     );
+
+    this.cache[cacheKey] = res;
+
+    return res;
   }
 
   freeSpots() {
     const { minX, minY, maxX, maxY } = this.size();
     return ((maxX - minX + 1) * (maxY - minY + 1)) - this.elves.length;
+  }
+
+  emptyCache() {
+    this.cache = {};
   }
 
   print() {

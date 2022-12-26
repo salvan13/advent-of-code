@@ -5,7 +5,7 @@ const { values } = await readInput({ sourceUrl: import.meta.url, parser: l => l.
 
 // part 1
 
-const run = rounds => {
+const run = (rounds = Infinity) => {
   const map = new Map(values);
 
   const consider = () => {
@@ -37,21 +37,32 @@ const run = rounds => {
     }
   };
 
-  const round = () => {
+
+  let r = 1;
+  while (r <= rounds) {
+    console.log("round", r);
     consider();
     move();
+    if (map.elves.every(elf => !elf.moved)) {
+      break;
+    }
     finalize();
-  };
-
-  for (let r = 1; r <= rounds; r++) {
-    console.log("round", r)
-    round();
+    map.emptyCache();
+    r++;
   }
 
-  return map;
+  return { map, rounds: r };
 };
 
-const map = run(10);
+{
+  const { map } = run(10);
 
-//map.print();
-console.log(map.freeSpots());
+  //map.print();
+  console.log(map.freeSpots());
+}
+
+// part 2
+{
+  const { rounds } = run();
+  console.log(rounds);
+}
