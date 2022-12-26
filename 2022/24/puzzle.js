@@ -5,20 +5,20 @@ const { values } = await readInput({ sourceUrl: import.meta.url, parser: l => l.
 
 // part 1
 
-const run = () => {
-  const state = new State(values);
+const run = (state, compareStates, goBack = false, maxStates = 100) => {
+  const { minX, minY, maxX, maxY } = state.size();
 
   let states = [state];
 
-  const cache = {};
+  const blizzardsMinuteCache = {};
+  const wallsCache = {};
 
   const step = (state) => {
     state.minute++;
 
-    const { minX, minY, maxX, maxY } = state.size();
-
-    if (cache[state.minute]) {
-      state.blizzards = cache[state.minute];
+    // calculate blizzards positions one time per minute and cache them
+    if (blizzardsMinuteCache[state.minute]) {
+      state.blizzards = blizzardsMinuteCache[state.minute];
     } else {
       for (const blizz of state.blizzards) {
         while (true) {
@@ -29,18 +29,17 @@ const run = () => {
           }
         }
       }
-      cache[state.minute] = state.blizzards;
+      blizzardsMinuteCache[state.minute] = state.blizzards;
     }
 
-
-    let usedPos = 0;
-
     for (const pos of state.me.availablePositions()) {
-      if (usedPos >= 2) {
-        //break;
+      const posKey = `${pos.y}:${pos.x}`;
+      if (!wallsCache[posKey]) {
+        // cache walls per position
+        wallsCache[posKey] = state.wallAt(pos);
       }
 
-      if (pos.y < 0 || state.wallAt(pos) || state.blizzardsAt(pos).length > 0) {
+      if (pos.y < 0 || pos.y > maxY || wallsCache[posKey] || state.blizzardsAt(pos).length > 0) {
         continue;
       }
 
@@ -48,40 +47,32 @@ const run = () => {
       newState.me.pos = pos;
 
       states.push(newState);
-
-      usedPos++;
     }
   };
 
-  const compareStates = (a, b) => {
-    const s = a.size();
-    const va = a.me.pos.x * s.maxX + a.me.pos.y * s.maxY;
-    const vb = b.me.pos.x * s.maxX + b.me.pos.y * s.maxY;
-    return vb - va;
-  };
-
   while (states.length) {
-    console.log(states[0].minute, states.length)
+    console.log(states[0].minute, states.length);
     const execute = [...states];
     states = [];
     for (const state of execute) {
       step(state);
-      //state.print()
     }
 
-    const win = states.find(state => state.over());
+    const win = states.find(state => state.over(goBack));
     if (win) {
       return win;
     }
 
-    //if (states.length)
+    // print all current positions each minute, quite expensive :/
+    // if (states.length)
     //  printStates(states);
 
+    // solution not found :(
     if (states.length === 0) {
       return execute.sort(compareStates)[0];
     }
 
-    // exclude duplicated
+    // exclude duplicated positions
     ({ states } = states.reduce((a, c) => {
       const key = `${c.me.pos.y}:${c.me.pos.x}`;
       if (!a.positions.has(key)) {
@@ -91,16 +82,41 @@ const run = () => {
       return a;
     }, { states: [], positions: new Set() }));
 
-    // use only best states
-    states = states.sort(compareStates).slice(0, 100);
+    // use only better positions
+    states = states.sort(compareStates).slice(0, maxStates);
   }
 }
 
 const printStates = (states) => {
   const debug = states.map(s => s.me);
   states[0].print(debug);
-}
+};
 
-const win = run();
-win.print();
-console.log(win.minute);
+const state = new State(values);
+const size = state.size();
+
+const compareStatesGo = (a, b) => {
+  const va = a.me.pos.x * size.maxX + a.me.pos.y * size.maxY;
+  const vb = b.me.pos.x * size.maxX + b.me.pos.y * size.maxY;
+  return vb - va;
+};
+
+const win1 = run(state, compareStatesGo);
+win1.print();
+console.log(win1.minute);
+
+// part 2
+
+const compareStatesBack = (a, b) => {
+  const va = a.me.pos.x * size.maxX + a.me.pos.y * size.maxY;
+  const vb = b.me.pos.x * size.maxX + b.me.pos.y * size.maxY;
+  return vb - va;
+};
+
+const back = run(win1, compareStatesBack, true, 1000);
+back.print();
+console.log(back.minute);
+
+const again = run(back, compareStatesGo);
+again.print();
+console.log(again.minute);

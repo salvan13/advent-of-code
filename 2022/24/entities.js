@@ -85,8 +85,8 @@ export class State {
     return this.blizzards.filter(blizz => blizz.pos.x === x && blizz.pos.y === y);
   }
 
-  over() {
-    return this.me.pos.y === this.size().maxY;
+  over(goBack) {
+    return goBack ? this.me.pos.y === this.size().minY : this.me.pos.y === this.size().maxY;
   }
 
   clone() {
