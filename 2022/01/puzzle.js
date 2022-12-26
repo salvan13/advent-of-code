@@ -4,19 +4,19 @@ const { values } = await readInput({ sourceUrl: import.meta.url, parser: l => pa
 
 // part 1
 
-const elfs = values.reduce((elfs, calorie) => {
+const elves = values.reduce((elves, calorie) => {
   if (calorie) {
-    elfs[elfs.length - 1] += calorie;
+    elves[elves.length - 1] += calorie;
   } else {
-    elfs.push(0);
+    elves.push(0);
   }
-  return elfs;
+  return elves;
 }, [0]);
 
-console.log(Math.max(...elfs));
+console.log(Math.max(...elves));
 
 // part 2
 
-const sortedElfs = elfs.sort((a, b) => b - a);
-const bestElfs = sortedElfs.slice(0, 3);
-console.log(sum(bestElfs));
+const sortedelves = elves.sort((a, b) => b - a);
+const bestelves = sortedelves.slice(0, 3);
+console.log(sum(bestelves));
