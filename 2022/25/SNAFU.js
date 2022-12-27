@@ -12,7 +12,7 @@ export default class SNAFU {
       "2": 2
     })[d];
 
-    return this.digits.reverse().map((d, i) => 5 ** i * digit(d)).reduce((a, c) => a + c, 0);
+    return [...this.digits].reverse().map((d, i) => 5 ** i * digit(d)).reduce((a, c) => a + c, 0);
   }
 
   toString() {
